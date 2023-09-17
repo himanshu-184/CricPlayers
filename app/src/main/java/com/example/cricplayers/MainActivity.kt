@@ -1,6 +1,7 @@
 package com.example.cricplayers
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -34,15 +35,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if(!isOnline(this)){
-            val alert = AlertDialog.Builder(this)
-            alert.setTitle("INTERNET CONNECTION NOT FOUND")
-            alert.setMessage("Please Check Your internet Connectivity")
-            alert.setCancelable(false)
-            alert.create()
-            alert.show()
-        }
-
+        checkInternetConnection()
         search.setOnClickListener{
             fetchPlayerSearch(playerSearch)
         }
@@ -79,7 +72,23 @@ class MainActivity : AppCompatActivity() {
         playerSearchLV.adapter =playerSearchAdapetr
     }
 
-
+    private fun checkInternetConnection(){
+        if(!isOnline(this)){
+            val alert = AlertDialog.Builder(this)
+            alert.setTitle("INTERNET CONNECTION NOT FOUND")
+            alert.setMessage("Please Check Your internet Connectivity")
+            alert.setCancelable(false)
+            alert.setPositiveButton("Refresh",
+            DialogInterface.OnClickListener { dialog, i ->
+                if(!isOnline(this)){
+                    Toast.makeText(this,"Please Check Your Internet Connectivity", Toast.LENGTH_SHORT).show()
+                }
+                checkInternetConnection()
+            })
+            alert.create()
+            alert.show()
+        }
+    }
     private fun isOnline(context: Context): Boolean {
         val connectivityManager =
             context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

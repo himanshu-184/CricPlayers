@@ -1,5 +1,6 @@
 package com.example.cricplayers
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -45,6 +46,7 @@ class PlayerInfo1Activity : AppCompatActivity() {
 
     }
 
+    @SuppressLint("SetTextI18n")
     private fun bindData(data: Data) {
 
         playerNameInfo.text = "Name - "+data.name
